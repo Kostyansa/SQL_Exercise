@@ -1,0 +1,703 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.1
+-- Dumped by pg_dump version 12.1
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- Name: shop; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+CREATE SCHEMA shop;
+
+
+ALTER SCHEMA shop OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: bundle; Type: TABLE; Schema: shop; Owner: postgres
+--
+
+CREATE TABLE shop.bundle (
+    id integer NOT NULL,
+    name text NOT NULL,
+    description text NOT NULL,
+    price money NOT NULL
+);
+
+
+ALTER TABLE shop.bundle OWNER TO postgres;
+
+--
+-- Name: bundle_has_item; Type: TABLE; Schema: shop; Owner: postgres
+--
+
+CREATE TABLE shop.bundle_has_item (
+    id_bundle integer NOT NULL,
+    id_item integer NOT NULL
+);
+
+
+ALTER TABLE shop.bundle_has_item OWNER TO postgres;
+
+--
+-- Name: bundle_id_seq; Type: SEQUENCE; Schema: shop; Owner: postgres
+--
+
+CREATE SEQUENCE shop.bundle_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE shop.bundle_id_seq OWNER TO postgres;
+
+--
+-- Name: bundle_id_seq; Type: SEQUENCE OWNED BY; Schema: shop; Owner: postgres
+--
+
+ALTER SEQUENCE shop.bundle_id_seq OWNED BY shop.bundle.id;
+
+
+--
+-- Name: customer; Type: TABLE; Schema: shop; Owner: postgres
+--
+
+CREATE TABLE shop.customer (
+    id integer NOT NULL,
+    fullname text NOT NULL,
+    password character varying(255) NOT NULL,
+    login character varying(45) NOT NULL
+);
+
+
+ALTER TABLE shop.customer OWNER TO postgres;
+
+--
+-- Name: customer_id_seq; Type: SEQUENCE; Schema: shop; Owner: postgres
+--
+
+CREATE SEQUENCE shop.customer_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE shop.customer_id_seq OWNER TO postgres;
+
+--
+-- Name: customer_id_seq; Type: SEQUENCE OWNED BY; Schema: shop; Owner: postgres
+--
+
+ALTER SEQUENCE shop.customer_id_seq OWNED BY shop.customer.id;
+
+
+--
+-- Name: customerorder; Type: TABLE; Schema: shop; Owner: postgres
+--
+
+CREATE TABLE shop.customerorder (
+    id integer NOT NULL,
+    id_customer integer NOT NULL
+);
+
+
+ALTER TABLE shop.customerorder OWNER TO postgres;
+
+--
+-- Name: customerorder_has_bundle; Type: TABLE; Schema: shop; Owner: postgres
+--
+
+CREATE TABLE shop.customerorder_has_bundle (
+    id_customerorder integer NOT NULL,
+    id_bundle integer
+);
+
+
+ALTER TABLE shop.customerorder_has_bundle OWNER TO postgres;
+
+--
+-- Name: customerorder_has_bundle_id_customerorder_seq; Type: SEQUENCE; Schema: shop; Owner: postgres
+--
+
+CREATE SEQUENCE shop.customerorder_has_bundle_id_customerorder_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE shop.customerorder_has_bundle_id_customerorder_seq OWNER TO postgres;
+
+--
+-- Name: customerorder_has_bundle_id_customerorder_seq; Type: SEQUENCE OWNED BY; Schema: shop; Owner: postgres
+--
+
+ALTER SEQUENCE shop.customerorder_has_bundle_id_customerorder_seq OWNED BY shop.customerorder_has_bundle.id_customerorder;
+
+
+--
+-- Name: customerorder_has_item; Type: TABLE; Schema: shop; Owner: postgres
+--
+
+CREATE TABLE shop.customerorder_has_item (
+    id_customerorder integer NOT NULL,
+    id_item integer
+);
+
+
+ALTER TABLE shop.customerorder_has_item OWNER TO postgres;
+
+--
+-- Name: customerorder_has_item_id_customerorder_seq; Type: SEQUENCE; Schema: shop; Owner: postgres
+--
+
+CREATE SEQUENCE shop.customerorder_has_item_id_customerorder_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE shop.customerorder_has_item_id_customerorder_seq OWNER TO postgres;
+
+--
+-- Name: customerorder_has_item_id_customerorder_seq; Type: SEQUENCE OWNED BY; Schema: shop; Owner: postgres
+--
+
+ALTER SEQUENCE shop.customerorder_has_item_id_customerorder_seq OWNED BY shop.customerorder_has_item.id_customerorder;
+
+
+--
+-- Name: customerorder_id_seq; Type: SEQUENCE; Schema: shop; Owner: postgres
+--
+
+CREATE SEQUENCE shop.customerorder_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE shop.customerorder_id_seq OWNER TO postgres;
+
+--
+-- Name: customerorder_id_seq; Type: SEQUENCE OWNED BY; Schema: shop; Owner: postgres
+--
+
+ALTER SEQUENCE shop.customerorder_id_seq OWNED BY shop.customerorder.id;
+
+
+--
+-- Name: item; Type: TABLE; Schema: shop; Owner: postgres
+--
+
+CREATE TABLE shop.item (
+    id integer NOT NULL,
+    name text NOT NULL,
+    description text NOT NULL,
+    price money NOT NULL
+);
+
+
+ALTER TABLE shop.item OWNER TO postgres;
+
+--
+-- Name: item_id_seq; Type: SEQUENCE; Schema: shop; Owner: postgres
+--
+
+CREATE SEQUENCE shop.item_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE shop.item_id_seq OWNER TO postgres;
+
+--
+-- Name: item_id_seq; Type: SEQUENCE OWNED BY; Schema: shop; Owner: postgres
+--
+
+ALTER SEQUENCE shop.item_id_seq OWNED BY shop.item.id;
+
+
+--
+-- Name: itemavailability; Type: TABLE; Schema: shop; Owner: postgres
+--
+
+CREATE TABLE shop.itemavailability (
+    id integer NOT NULL,
+    amount integer NOT NULL
+);
+
+
+ALTER TABLE shop.itemavailability OWNER TO postgres;
+
+--
+-- Name: payment; Type: TABLE; Schema: shop; Owner: postgres
+--
+
+CREATE TABLE shop.payment (
+    id integer NOT NULL,
+    id_customerorder integer NOT NULL,
+    price money NOT NULL,
+    completed boolean DEFAULT false NOT NULL
+);
+
+
+ALTER TABLE shop.payment OWNER TO postgres;
+
+--
+-- Name: payment_id_seq; Type: SEQUENCE; Schema: shop; Owner: postgres
+--
+
+CREATE SEQUENCE shop.payment_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE shop.payment_id_seq OWNER TO postgres;
+
+--
+-- Name: payment_id_seq; Type: SEQUENCE OWNED BY; Schema: shop; Owner: postgres
+--
+
+ALTER SEQUENCE shop.payment_id_seq OWNED BY shop.payment.id;
+
+
+--
+-- Name: bundle id; Type: DEFAULT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.bundle ALTER COLUMN id SET DEFAULT nextval('shop.bundle_id_seq'::regclass);
+
+
+--
+-- Name: customer id; Type: DEFAULT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.customer ALTER COLUMN id SET DEFAULT nextval('shop.customer_id_seq'::regclass);
+
+
+--
+-- Name: customerorder id; Type: DEFAULT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.customerorder ALTER COLUMN id SET DEFAULT nextval('shop.customerorder_id_seq'::regclass);
+
+
+--
+-- Name: customerorder_has_bundle id_customerorder; Type: DEFAULT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.customerorder_has_bundle ALTER COLUMN id_customerorder SET DEFAULT nextval('shop.customerorder_has_bundle_id_customerorder_seq'::regclass);
+
+
+--
+-- Name: customerorder_has_item id_customerorder; Type: DEFAULT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.customerorder_has_item ALTER COLUMN id_customerorder SET DEFAULT nextval('shop.customerorder_has_item_id_customerorder_seq'::regclass);
+
+
+--
+-- Name: item id; Type: DEFAULT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.item ALTER COLUMN id SET DEFAULT nextval('shop.item_id_seq'::regclass);
+
+
+--
+-- Name: payment id; Type: DEFAULT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.payment ALTER COLUMN id SET DEFAULT nextval('shop.payment_id_seq'::regclass);
+
+
+--
+-- Data for Name: bundle; Type: TABLE DATA; Schema: shop; Owner: postgres
+--
+
+COPY shop.bundle (id, name, description, price) FROM stdin;
+2	TestItem23	TestItem24	$1.51
+3	TestItem25	TestItem26	$141.60
+4	TestItem27	TestItem28	$3.04
+\.
+
+
+--
+-- Data for Name: bundle_has_item; Type: TABLE DATA; Schema: shop; Owner: postgres
+--
+
+COPY shop.bundle_has_item (id_bundle, id_item) FROM stdin;
+2	2
+3	3
+2	6
+2	1
+3	7
+\.
+
+
+--
+-- Data for Name: customer; Type: TABLE DATA; Schema: shop; Owner: postgres
+--
+
+COPY shop.customer (id, fullname, password, login) FROM stdin;
+1	TestUser1	349Jmk	FxTbUNw6
+2	TestUser2	1v	eJSu
+3	TestUser3	T6	HlE
+4	TestUser4	FZKds	E
+5	TestUser5	kC	y
+6	TestUser6	cKxb4A	ui
+7	TestUser7	n0	V3gio3ux
+8	TestUser8	zzf	a
+9	TestUser9	oi	lXz
+10	TestUser10	WZ02Q3	19L
+\.
+
+
+--
+-- Data for Name: customerorder; Type: TABLE DATA; Schema: shop; Owner: postgres
+--
+
+COPY shop.customerorder (id, id_customer) FROM stdin;
+1	1
+2	2
+3	3
+4	5
+5	7
+\.
+
+
+--
+-- Data for Name: customerorder_has_bundle; Type: TABLE DATA; Schema: shop; Owner: postgres
+--
+
+COPY shop.customerorder_has_bundle (id_customerorder, id_bundle) FROM stdin;
+\.
+
+
+--
+-- Data for Name: customerorder_has_item; Type: TABLE DATA; Schema: shop; Owner: postgres
+--
+
+COPY shop.customerorder_has_item (id_customerorder, id_item) FROM stdin;
+1	2
+2	2
+3	3
+5	6
+5	1
+\.
+
+
+--
+-- Data for Name: item; Type: TABLE DATA; Schema: shop; Owner: postgres
+--
+
+COPY shop.item (id, name, description, price) FROM stdin;
+1	TestItem1	TestItem2	$2.49
+2	TestItem3	TestItem4	$4.59
+3	TestItem5	TestItem6	$3.83
+4	TestItem7	TestItem8	$67.06
+5	TestItem9	TestItem10	$2.53
+6	TestItem11	TestItem12	$6.71
+7	TestItem13	TestItem14	$8.98
+8	TestItem15	TestItem16	$2,281.75
+9	TestItem17	TestItem18	$455.96
+10	TestItem19	TestItem20	$492.13
+\.
+
+
+--
+-- Data for Name: itemavailability; Type: TABLE DATA; Schema: shop; Owner: postgres
+--
+
+COPY shop.itemavailability (id, amount) FROM stdin;
+1	0
+2	100
+3	1000
+5	235
+6	1
+7	20
+9	23
+10	0
+\.
+
+
+--
+-- Data for Name: payment; Type: TABLE DATA; Schema: shop; Owner: postgres
+--
+
+COPY shop.payment (id, id_customerorder, price, completed) FROM stdin;
+\.
+
+
+--
+-- Name: bundle_id_seq; Type: SEQUENCE SET; Schema: shop; Owner: postgres
+--
+
+SELECT pg_catalog.setval('shop.bundle_id_seq', 12, true);
+
+
+--
+-- Name: customer_id_seq; Type: SEQUENCE SET; Schema: shop; Owner: postgres
+--
+
+SELECT pg_catalog.setval('shop.customer_id_seq', 10, true);
+
+
+--
+-- Name: customerorder_has_bundle_id_customerorder_seq; Type: SEQUENCE SET; Schema: shop; Owner: postgres
+--
+
+SELECT pg_catalog.setval('shop.customerorder_has_bundle_id_customerorder_seq', 1, false);
+
+
+--
+-- Name: customerorder_has_item_id_customerorder_seq; Type: SEQUENCE SET; Schema: shop; Owner: postgres
+--
+
+SELECT pg_catalog.setval('shop.customerorder_has_item_id_customerorder_seq', 1, false);
+
+
+--
+-- Name: customerorder_id_seq; Type: SEQUENCE SET; Schema: shop; Owner: postgres
+--
+
+SELECT pg_catalog.setval('shop.customerorder_id_seq', 5, true);
+
+
+--
+-- Name: item_id_seq; Type: SEQUENCE SET; Schema: shop; Owner: postgres
+--
+
+SELECT pg_catalog.setval('shop.item_id_seq', 10, true);
+
+
+--
+-- Name: payment_id_seq; Type: SEQUENCE SET; Schema: shop; Owner: postgres
+--
+
+SELECT pg_catalog.setval('shop.payment_id_seq', 1, false);
+
+
+--
+-- Name: bundle bundle_pkey; Type: CONSTRAINT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.bundle
+    ADD CONSTRAINT bundle_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: customer customer_pkey; Type: CONSTRAINT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.customer
+    ADD CONSTRAINT customer_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: customerorder customerorder_pkey; Type: CONSTRAINT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.customerorder
+    ADD CONSTRAINT customerorder_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: item item_pkey; Type: CONSTRAINT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.item
+    ADD CONSTRAINT item_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: itemavailability itemavailability_id_key; Type: CONSTRAINT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.itemavailability
+    ADD CONSTRAINT itemavailability_id_key UNIQUE (id);
+
+
+--
+-- Name: payment payment_pkey; Type: CONSTRAINT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.payment
+    ADD CONSTRAINT payment_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: idbundle_unique; Type: INDEX; Schema: shop; Owner: postgres
+--
+
+CREATE UNIQUE INDEX idbundle_unique ON shop.bundle USING btree (id);
+
+
+--
+-- Name: idcustomer; Type: INDEX; Schema: shop; Owner: postgres
+--
+
+CREATE INDEX idcustomer ON shop.customerorder USING btree (id_customer);
+
+
+--
+-- Name: idcustomer_unique; Type: INDEX; Schema: shop; Owner: postgres
+--
+
+CREATE UNIQUE INDEX idcustomer_unique ON shop.customer USING btree (id);
+
+
+--
+-- Name: idcustomerorder_unique; Type: INDEX; Schema: shop; Owner: postgres
+--
+
+CREATE UNIQUE INDEX idcustomerorder_unique ON shop.customerorder USING btree (id);
+
+
+--
+-- Name: iditem_unique; Type: INDEX; Schema: shop; Owner: postgres
+--
+
+CREATE UNIQUE INDEX iditem_unique ON shop.item USING btree (id);
+
+
+--
+-- Name: idorder_unique; Type: INDEX; Schema: shop; Owner: postgres
+--
+
+CREATE UNIQUE INDEX idorder_unique ON shop.payment USING btree (id_customerorder);
+
+
+--
+-- Name: idpayment_unique; Type: INDEX; Schema: shop; Owner: postgres
+--
+
+CREATE UNIQUE INDEX idpayment_unique ON shop.payment USING btree (id);
+
+
+--
+-- Name: logincustomer_unique; Type: INDEX; Schema: shop; Owner: postgres
+--
+
+CREATE UNIQUE INDEX logincustomer_unique ON shop.customer USING btree (login);
+
+
+--
+-- Name: nambundle_unique; Type: INDEX; Schema: shop; Owner: postgres
+--
+
+CREATE UNIQUE INDEX nambundle_unique ON shop.bundle USING btree (name);
+
+
+--
+-- Name: nameitem_unique; Type: INDEX; Schema: shop; Owner: postgres
+--
+
+CREATE UNIQUE INDEX nameitem_unique ON shop.item USING btree (name);
+
+
+--
+-- Name: bundle_has_item bundle_has_item_id_bundle_fkey; Type: FK CONSTRAINT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.bundle_has_item
+    ADD CONSTRAINT bundle_has_item_id_bundle_fkey FOREIGN KEY (id_bundle) REFERENCES shop.bundle(id) ON DELETE CASCADE;
+
+
+--
+-- Name: bundle_has_item bundle_has_item_id_item_fkey; Type: FK CONSTRAINT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.bundle_has_item
+    ADD CONSTRAINT bundle_has_item_id_item_fkey FOREIGN KEY (id_item) REFERENCES shop.item(id) ON DELETE SET NULL;
+
+
+--
+-- Name: customerorder_has_bundle customerorder_has_bundle_id_bundle_fkey; Type: FK CONSTRAINT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.customerorder_has_bundle
+    ADD CONSTRAINT customerorder_has_bundle_id_bundle_fkey FOREIGN KEY (id_bundle) REFERENCES shop.bundle(id) ON DELETE SET NULL;
+
+
+--
+-- Name: customerorder_has_bundle customerorder_has_bundle_id_customerorder_fkey; Type: FK CONSTRAINT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.customerorder_has_bundle
+    ADD CONSTRAINT customerorder_has_bundle_id_customerorder_fkey FOREIGN KEY (id_customerorder) REFERENCES shop.customerorder(id) ON DELETE CASCADE;
+
+
+--
+-- Name: customerorder_has_item customerorder_has_item_id_customerorder_fkey; Type: FK CONSTRAINT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.customerorder_has_item
+    ADD CONSTRAINT customerorder_has_item_id_customerorder_fkey FOREIGN KEY (id_customerorder) REFERENCES shop.customerorder(id) ON DELETE CASCADE;
+
+
+--
+-- Name: customerorder_has_item customerorder_has_item_id_item_fkey; Type: FK CONSTRAINT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.customerorder_has_item
+    ADD CONSTRAINT customerorder_has_item_id_item_fkey FOREIGN KEY (id_item) REFERENCES shop.item(id) ON DELETE SET NULL;
+
+
+--
+-- Name: itemavailability itemavailability_id_fkey; Type: FK CONSTRAINT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.itemavailability
+    ADD CONSTRAINT itemavailability_id_fkey FOREIGN KEY (id) REFERENCES shop.item(id) ON DELETE CASCADE;
+
+
+--
+-- Name: payment payment_id_customerorder_fkey; Type: FK CONSTRAINT; Schema: shop; Owner: postgres
+--
+
+ALTER TABLE ONLY shop.payment
+    ADD CONSTRAINT payment_id_customerorder_fkey FOREIGN KEY (id_customerorder) REFERENCES shop.customerorder(id) ON DELETE CASCADE;
+
+
+--
+-- PostgreSQL database dump complete
+--
+
